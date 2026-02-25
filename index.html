@@ -38,8 +38,39 @@
       <!-- AES Inputs -->
       <fieldset class="input-panel__group" data-input-for="aes">
         <legend>AES-128 入力</legend>
+
+        <!-- Quick-fill presets -->
+        <div class="input-helpers">
+          <span class="input-helpers__label">かんたん入力:</span>
+          <div class="input-helpers__buttons">
+            <button class="input-helpers__btn" type="button"
+                    data-preset="hello" aria-label="Hello World のサンプルを使用">
+              Hello World
+            </button>
+            <button class="input-helpers__btn" type="button"
+                    data-preset="nist" aria-label="NIST テストベクターを使用">
+              NIST テストベクター
+            </button>
+            <button class="input-helpers__btn" type="button"
+                    data-preset="random" aria-label="ランダムな値を生成">
+              ランダム生成
+            </button>
+          </div>
+        </div>
+
+        <!-- Text-to-hex helper -->
+        <label class="input-panel__label" for="aes-text-input">
+          テキストで入力（16文字まで・自動でHEXに変換）
+          <input class="input-panel__field"
+                 type="text"
+                 id="aes-text-input"
+                 placeholder="例: Hello, World!!!"
+                 maxlength="16"
+                 data-input="aes-text-input">
+        </label>
+
         <label class="input-panel__label" for="aes-plaintext">
-          平文 (32桁の16進数)
+          平文 (HEX)
           <input class="input-panel__field"
                  type="text"
                  id="aes-plaintext"
@@ -49,14 +80,20 @@
                  data-input="aes-plaintext">
         </label>
         <label class="input-panel__label" for="aes-key">
-          鍵 (32桁の16進数)
-          <input class="input-panel__field"
-                 type="text"
-                 id="aes-key"
-                 placeholder="000102030405060708090a0b0c0d0e0f"
-                 maxlength="32"
-                 pattern="[0-9a-fA-F]{32}"
-                 data-input="aes-key">
+          鍵 (HEX)
+          <div class="input-panel__field-row">
+            <input class="input-panel__field"
+                   type="text"
+                   id="aes-key"
+                   placeholder="000102030405060708090a0b0c0d0e0f"
+                   maxlength="32"
+                   pattern="[0-9a-fA-F]{32}"
+                   data-input="aes-key">
+            <button class="input-helpers__btn input-helpers__btn--inline" type="button"
+                    id="btn-random-key" aria-label="ランダムな鍵を生成">
+              ランダム
+            </button>
+          </div>
         </label>
       </fieldset>
 
@@ -128,7 +165,7 @@
     <!-- Visualization Area -->
     <section class="viz-area" id="viz-area" aria-label="可視化エリア" aria-live="polite">
       <p class="viz-area__placeholder">
-        上の入力欄に値を入力し、「暗号化を開始」ボタンを押してください。
+        上の「かんたん入力」からサンプルを選ぶか、テキストを入力して「暗号化を開始」ボタンを押してください。
       </p>
     </section>
 
