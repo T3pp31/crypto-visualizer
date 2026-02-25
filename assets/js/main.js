@@ -5,6 +5,7 @@
 
 import { buildAESSteps, keyExpansion } from './algorithms/aes.js';
 import { buildRSASteps } from './algorithms/rsa.js';
+import { buildCaesarSteps } from './algorithms/caesar.js';
 import { hexToBytes } from './algorithms/utils.js';
 import { Stepper } from './visualizer/stepper.js';
 import { Renderer } from './visualizer/renderer.js';
@@ -31,7 +32,7 @@ const btnRandomKey = document.getElementById('btn-random-key');
 const presetButtons = document.querySelectorAll('[data-preset]');
 
 // --- State ---
-let currentAlgo = 'aes';
+let currentAlgo = 'caesar';
 let stepper = null;
 let animator = null;
 let currentRoundKeys = null;
@@ -57,7 +58,9 @@ algoButtons.forEach((btn) => {
 btnEncrypt.addEventListener('click', () => {
   try {
     inputError.textContent = '';
-    if (currentAlgo === 'aes') {
+    if (currentAlgo === 'caesar') {
+      startCaesar();
+    } else if (currentAlgo === 'aes') {
       startAES();
     } else {
       startRSA();
@@ -66,6 +69,18 @@ btnEncrypt.addEventListener('click', () => {
     inputError.textContent = err.message;
   }
 });
+
+function startCaesar() {
+  const text = document.getElementById('caesar-text').value;
+  const shift = parseInt(document.getElementById('caesar-shift').value, 10);
+  if (isNaN(shift) || shift < 1 || shift > 25) {
+    throw new RangeError('シフト量は1〜25の範囲で指定してください。');
+  }
+  const steps = buildCaesarSteps(text, shift);
+  currentRoundKeys = null;
+  renderer.hideRoundKeys();
+  initVisualization(steps);
+}
 
 function startAES() {
   const pt = document.getElementById('aes-plaintext').value.trim();
@@ -261,4 +276,33 @@ presetButtons.forEach((btn) => {
       aesKey.value = p.key;
     }
   });
+});
+
+// --- HEX Converter Tool ---
+const hexToolText = document.getElementById('hex-tool-text');
+const hexToolHex = document.getElementById('hex-tool-hex');
+let hexToolUpdating = false;
+
+hexToolText.addEventListener('input', () => {
+  if (hexToolUpdating) return;
+  hexToolUpdating = true;
+  const text = hexToolText.value;
+  hexToolHex.value = [...text]
+    .map((ch) => ch.charCodeAt(0).toString(16).padStart(2, '0'))
+    .join(' ');
+  hexToolUpdating = false;
+});
+
+hexToolHex.addEventListener('input', () => {
+  if (hexToolUpdating) return;
+  hexToolUpdating = true;
+  const raw = hexToolHex.value.replace(/\s+/g, '');
+  if (/^[0-9a-fA-F]*$/.test(raw) && raw.length % 2 === 0) {
+    let text = '';
+    for (let i = 0; i < raw.length; i += 2) {
+      text += String.fromCharCode(parseInt(raw.substring(i, i + 2), 16));
+    }
+    hexToolText.value = text;
+  }
+  hexToolUpdating = false;
 });

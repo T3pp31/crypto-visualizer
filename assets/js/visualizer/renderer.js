@@ -29,6 +29,8 @@ export class Renderer {
       this.#renderAESStep(step);
     } else if (step.algorithm === 'rsa') {
       this.#renderRSAStep(step);
+    } else if (step.algorithm === 'caesar') {
+      this.#renderCaesarStep(step);
     }
   }
 
@@ -122,6 +124,111 @@ export class Renderer {
     this.#appendCard(card);
   }
 
+  #renderCaesarStep(step) {
+    const card = this.#buildCard(step);
+    const content = document.createElement('div');
+    content.className = 'step-card__content step-card__content--vertical';
+
+    // Formula
+    if (step.formula) {
+      const formula = document.createElement('div');
+      formula.className = 'step-card__formula';
+      formula.textContent = step.formula;
+      content.append(formula);
+    }
+
+    // Character grid
+    if (step.charResults) {
+      const charSection = document.createElement('div');
+      charSection.className = 'caesar-chars';
+
+      // Original text row
+      const origRow = document.createElement('div');
+      origRow.className = 'caesar-chars__row';
+      const origLabel = document.createElement('span');
+      origLabel.className = 'caesar-chars__row-label';
+      origLabel.textContent = '平文:';
+      origRow.append(origLabel);
+
+      const origCells = document.createElement('div');
+      origCells.className = 'caesar-chars__cells';
+      step.charResults.forEach((r) => {
+        const cell = document.createElement('span');
+        cell.className = 'caesar-chars__cell';
+        if (r.status === 'active') cell.classList.add('caesar-chars__cell--active');
+        if (r.status === 'done') cell.classList.add('caesar-chars__cell--done');
+        cell.textContent = r.original;
+        origCells.append(cell);
+      });
+      origRow.append(origCells);
+      charSection.append(origRow);
+
+      // Arrow row
+      const arrowRow = document.createElement('div');
+      arrowRow.className = 'caesar-chars__row';
+      const arrowLabel = document.createElement('span');
+      arrowLabel.className = 'caesar-chars__row-label';
+      arrowLabel.textContent = '';
+      arrowRow.append(arrowLabel);
+
+      const arrowCells = document.createElement('div');
+      arrowCells.className = 'caesar-chars__cells';
+      step.charResults.forEach((r) => {
+        const cell = document.createElement('span');
+        cell.className = 'caesar-chars__arrow';
+        if (r.status === 'active' || r.status === 'done') {
+          cell.textContent = r.isAlpha ? '↓' : '·';
+          if (r.status === 'active') cell.classList.add('caesar-chars__arrow--active');
+        }
+        arrowCells.append(cell);
+      });
+      arrowRow.append(arrowCells);
+      charSection.append(arrowRow);
+
+      // Cipher text row
+      const cipherRow = document.createElement('div');
+      cipherRow.className = 'caesar-chars__row';
+      const cipherLabel = document.createElement('span');
+      cipherLabel.className = 'caesar-chars__row-label';
+      cipherLabel.textContent = '暗号文:';
+      cipherRow.append(cipherLabel);
+
+      const cipherCells = document.createElement('div');
+      cipherCells.className = 'caesar-chars__cells';
+      step.charResults.forEach((r) => {
+        const cell = document.createElement('span');
+        cell.className = 'caesar-chars__cell';
+        if (r.status === 'active') cell.classList.add('caesar-chars__cell--active');
+        if (r.status === 'done') cell.classList.add('caesar-chars__cell--done');
+        cell.textContent = (r.status === 'active' || r.status === 'done') ? r.shifted : '';
+        cipherCells.append(cell);
+      });
+      cipherRow.append(cipherCells);
+      charSection.append(cipherRow);
+
+      content.append(charSection);
+    }
+
+    // Values (for result / decrypt steps)
+    if (step.values) {
+      const valGrid = document.createElement('div');
+      valGrid.className = 'step-card__values';
+      for (const [k, v] of Object.entries(step.values)) {
+        const keyEl = document.createElement('span');
+        keyEl.className = 'step-card__value-key';
+        keyEl.textContent = k;
+        const valEl = document.createElement('span');
+        valEl.className = 'step-card__value-val';
+        valEl.textContent = String(v);
+        valGrid.append(keyEl, valEl);
+      }
+      content.append(valGrid);
+    }
+
+    card.append(content);
+    this.#appendCard(card);
+  }
+
   #buildCard(step) {
     const article = document.createElement('article');
     article.className = 'step-card';
@@ -132,12 +239,17 @@ export class Renderer {
     const header = document.createElement('div');
     header.className = 'step-card__header';
 
-    if (step.round !== undefined) {
+    if (step.round !== undefined || step.phase) {
       const badge = document.createElement('span');
       badge.className = 'step-card__round-badge';
-      badge.textContent = step.algorithm === 'aes'
-        ? `R${step.round}`
-        : step.phase.toUpperCase();
+      if (step.algorithm === 'aes') {
+        badge.textContent = `R${step.round}`;
+      } else if (step.algorithm === 'caesar') {
+        const phaseLabels = { overview: '概要', encrypt: '暗号化', result: '結果', decrypt: '復号' };
+        badge.textContent = phaseLabels[step.phase] || step.phase;
+      } else {
+        badge.textContent = step.phase.toUpperCase();
+      }
       header.append(badge);
     }
 

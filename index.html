@@ -13,15 +13,21 @@
 <body>
   <header class="site-header">
     <h1 class="site-header__title">暗号アルゴリズム ビジュアライザー</h1>
-    <p class="site-header__subtitle">AES-128 / RSA の暗号化プロセスをステップごとに可視化</p>
+    <p class="site-header__subtitle">シーザー暗号 / AES-128 / RSA の暗号化プロセスをステップごとに可視化</p>
   </header>
 
   <main class="main-content">
     <!-- Algorithm Selector -->
     <nav class="algo-tabs" aria-label="アルゴリズム選択">
       <button class="algo-tabs__btn algo-tabs__btn--active"
-              data-algo="aes"
+              data-algo="caesar"
               aria-pressed="true"
+              aria-label="シーザー暗号を選択">
+        シーザー暗号
+      </button>
+      <button class="algo-tabs__btn"
+              data-algo="aes"
+              aria-pressed="false"
               aria-label="AES-128を選択">
         AES-128
       </button>
@@ -35,8 +41,30 @@
 
     <!-- Input Section -->
     <section class="input-panel" aria-label="入力パネル">
+      <!-- Caesar Inputs -->
+      <fieldset class="input-panel__group" data-input-for="caesar">
+        <legend>シーザー暗号 入力</legend>
+        <label class="input-panel__label" for="caesar-text">
+          テキスト（英字）
+          <input class="input-panel__field"
+                 type="text"
+                 id="caesar-text"
+                 placeholder="例: Hello, World!"
+                 value="Hello, World!"
+                 data-input="caesar-text">
+        </label>
+        <label class="input-panel__label" for="caesar-shift">
+          シフト量 (1〜25)
+          <input class="input-panel__field"
+                 type="number"
+                 id="caesar-shift"
+                 value="3" min="1" max="25"
+                 data-input="caesar-shift">
+        </label>
+      </fieldset>
+
       <!-- AES Inputs -->
-      <fieldset class="input-panel__group" data-input-for="aes">
+      <fieldset class="input-panel__group is-hidden" data-input-for="aes">
         <legend>AES-128 入力</legend>
 
         <!-- Quick-fill presets -->
@@ -175,6 +203,24 @@
       <div class="round-key-panel__grid" id="round-key-grid"></div>
     </aside>
   </main>
+
+  <!-- HEX Converter Tool -->
+  <aside class="hex-tool" aria-label="HEX変換ツール">
+    <h2 class="hex-tool__title">テキスト ⇔ HEX 変換ツール</h2>
+    <div class="hex-tool__body">
+      <label class="hex-tool__label" for="hex-tool-text">
+        テキスト
+        <textarea class="hex-tool__field" id="hex-tool-text" rows="2"
+                  placeholder="変換したいテキストを入力"></textarea>
+      </label>
+      <div class="hex-tool__arrow" aria-hidden="true">⇅</div>
+      <label class="hex-tool__label" for="hex-tool-hex">
+        HEX
+        <textarea class="hex-tool__field hex-tool__field--mono" id="hex-tool-hex" rows="2"
+                  placeholder="HEX文字列を入力"></textarea>
+      </label>
+    </div>
+  </aside>
 
   <footer class="site-footer">
     <p>教育目的の暗号アルゴリズム可視化ツール</p>
