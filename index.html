@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>暗号アルゴリズム ビジュアライザー</title>
+  <link rel="stylesheet" href="assets/css/base.css">
+  <link rel="stylesheet" href="assets/css/layout.css">
+  <link rel="stylesheet" href="assets/css/components/step-card.css">
+  <link rel="stylesheet" href="assets/css/components/byte-grid.css">
+  <link rel="stylesheet" href="assets/css/components/controls.css">
+</head>
+<body>
+  <header class="site-header">
+    <h1 class="site-header__title">暗号アルゴリズム ビジュアライザー</h1>
+    <p class="site-header__subtitle">AES-128 / RSA の暗号化プロセスをステップごとに可視化</p>
+  </header>
+
+  <main class="main-content">
+    <!-- Algorithm Selector -->
+    <nav class="algo-tabs" aria-label="アルゴリズム選択">
+      <button class="algo-tabs__btn algo-tabs__btn--active"
+              data-algo="aes"
+              aria-pressed="true"
+              aria-label="AES-128を選択">
+        AES-128
+      </button>
+      <button class="algo-tabs__btn"
+              data-algo="rsa"
+              aria-pressed="false"
+              aria-label="RSAを選択">
+        RSA
+      </button>
+    </nav>
+
+    <!-- Input Section -->
+    <section class="input-panel" aria-label="入力パネル">
+      <!-- AES Inputs -->
+      <fieldset class="input-panel__group" data-input-for="aes">
+        <legend>AES-128 入力</legend>
+        <label class="input-panel__label" for="aes-plaintext">
+          平文 (32桁の16進数)
+          <input class="input-panel__field"
+                 type="text"
+                 id="aes-plaintext"
+                 placeholder="00112233445566778899aabbccddeeff"
+                 maxlength="32"
+                 pattern="[0-9a-fA-F]{32}"
+                 data-input="aes-plaintext">
+        </label>
+        <label class="input-panel__label" for="aes-key">
+          鍵 (32桁の16進数)
+          <input class="input-panel__field"
+                 type="text"
+                 id="aes-key"
+                 placeholder="000102030405060708090a0b0c0d0e0f"
+                 maxlength="32"
+                 pattern="[0-9a-fA-F]{32}"
+                 data-input="aes-key">
+        </label>
+      </fieldset>
+
+      <!-- RSA Inputs -->
+      <fieldset class="input-panel__group is-hidden" data-input-for="rsa">
+        <legend>RSA 入力</legend>
+        <label class="input-panel__label" for="rsa-p">
+          素数 p
+          <input class="input-panel__field" type="number" id="rsa-p"
+                 value="61" min="2" data-input="rsa-p">
+        </label>
+        <label class="input-panel__label" for="rsa-q">
+          素数 q
+          <input class="input-panel__field" type="number" id="rsa-q"
+                 value="53" min="2" data-input="rsa-q">
+        </label>
+        <label class="input-panel__label" for="rsa-e">
+          公開指数 e
+          <input class="input-panel__field" type="number" id="rsa-e"
+                 value="17" min="2" data-input="rsa-e">
+        </label>
+        <label class="input-panel__label" for="rsa-message">
+          メッセージ M (数値)
+          <input class="input-panel__field" type="number" id="rsa-message"
+                 value="65" min="0" data-input="rsa-message">
+        </label>
+      </fieldset>
+
+      <button class="input-panel__submit" id="btn-encrypt" aria-label="暗号化を開始">
+        暗号化を開始
+      </button>
+
+      <output class="input-panel__error" id="input-error" aria-live="assertive"></output>
+    </section>
+
+    <!-- Controls -->
+    <section class="controls" aria-label="再生コントロール">
+      <button class="controls__btn" id="btn-first" aria-label="最初のステップへ" disabled>
+        &#x23EE;
+      </button>
+      <button class="controls__btn" id="btn-prev" aria-label="前のステップへ" disabled>
+        &#x23F4;
+      </button>
+      <button class="controls__btn controls__btn--primary" id="btn-play" aria-label="自動再生" disabled>
+        &#x25B6;
+      </button>
+      <button class="controls__btn" id="btn-next" aria-label="次のステップへ" disabled>
+        &#x23F5;
+      </button>
+      <button class="controls__btn" id="btn-last" aria-label="最後のステップへ" disabled>
+        &#x23ED;
+      </button>
+
+      <div class="controls__progress">
+        <span class="controls__step-label" id="step-label" aria-live="polite">
+          ステップ: -- / --
+        </span>
+        <progress class="controls__progress-bar" id="progress-bar" value="0" max="100"></progress>
+      </div>
+
+      <label class="controls__speed-label" for="speed-slider">
+        速度
+        <input class="controls__speed-slider" type="range" id="speed-slider"
+               min="100" max="2000" value="800" step="100"
+               aria-label="アニメーション速度">
+      </label>
+    </section>
+
+    <!-- Visualization Area -->
+    <section class="viz-area" id="viz-area" aria-label="可視化エリア" aria-live="polite">
+      <p class="viz-area__placeholder">
+        上の入力欄に値を入力し、「暗号化を開始」ボタンを押してください。
+      </p>
+    </section>
+
+    <!-- Round Key Display (AES only) -->
+    <aside class="round-key-panel is-hidden" id="round-key-panel" aria-label="ラウンドキー表示">
+      <h2 class="round-key-panel__title">ラウンドキー</h2>
+      <div class="round-key-panel__grid" id="round-key-grid"></div>
+    </aside>
+  </main>
+
+  <footer class="site-footer">
+    <p>教育目的の暗号アルゴリズム可視化ツール</p>
+  </footer>
+
+  <script type="module" src="assets/js/main.js" defer></script>
+</body>
+</html>

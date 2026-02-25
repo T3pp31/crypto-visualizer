@@ -1,0 +1,132 @@
+/* ==========================================================================
+   byte-grid.css — 4x4 byte grid for AES state visualization
+   ========================================================================== */
+
+.byte-grid {
+  display: grid;
+  grid-template-columns: repeat(4, var(--byte-cell-size));
+  grid-template-rows: repeat(4, var(--byte-cell-size));
+  gap: var(--space-xs);
+}
+
+.byte-grid__cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--byte-cell-size);
+  height: var(--byte-cell-size);
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--space-xs);
+  font-size: var(--font-size-sm);
+  font-family: var(--font-mono);
+  text-transform: lowercase;
+  transition: background-color var(--transition-step),
+              transform var(--transition-step),
+              border-color var(--transition-step);
+}
+
+.byte-grid__cell--changed {
+  background-color: var(--color-highlight);
+  color: var(--color-bg);
+  border-color: var(--color-highlight);
+  transform: scale(1.1);
+  font-weight: 700;
+}
+
+/* --- Grid labels --- */
+.byte-grid-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.byte-grid-wrapper__label {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  font-weight: 600;
+}
+
+/* --- Row labels for ShiftRows visualization --- */
+.byte-grid-with-labels {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--space-xs) var(--space-sm);
+  align-items: center;
+}
+
+.byte-grid__row-label {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+  white-space: nowrap;
+}
+
+/* --- Round key mini grid --- */
+.round-key-mini {
+  display: grid;
+  grid-template-columns: repeat(4, calc(var(--space-lg) - var(--space-xs)));
+  gap: 2px;
+  margin-bottom: var(--space-sm);
+}
+
+.round-key-mini__cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calc(var(--space-lg) - var(--space-xs));
+  height: calc(var(--space-lg) - var(--space-xs));
+  background-color: var(--color-bg);
+  border-radius: 2px;
+  font-size: 0.625rem;
+  font-family: var(--font-mono);
+  color: var(--color-text-muted);
+}
+
+.round-key-mini__cell--active {
+  background-color: var(--color-highlight-dim);
+  color: var(--color-highlight);
+}
+
+.round-key-entry {
+  margin-bottom: var(--space-md);
+  padding-bottom: var(--space-md);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.round-key-entry:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.round-key-entry__label {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-xs);
+}
+
+.round-key-entry--active .round-key-entry__label {
+  color: var(--color-highlight);
+  font-weight: 600;
+}
+
+/* --- XOR visualization --- */
+.xor-display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.xor-display__operator {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: var(--color-primary);
+}
+
+.xor-display__separator {
+  width: 100%;
+  height: 2px;
+  background-color: var(--color-primary);
+}

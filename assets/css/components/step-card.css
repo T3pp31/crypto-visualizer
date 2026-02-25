@@ -1,0 +1,99 @@
+/* ==========================================================================
+   step-card.css — Step card component
+   ========================================================================== */
+
+.step-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--space-sm);
+  padding: var(--space-md);
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity var(--transition-step),
+              transform var(--transition-step);
+}
+
+.step-card.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+.step-card__header {
+  display: flex;
+  align-items: baseline;
+  gap: var(--space-sm);
+  margin-bottom: var(--space-md);
+}
+
+.step-card__round-badge {
+  display: inline-block;
+  padding: var(--space-xs) var(--space-sm);
+  background-color: var(--color-primary);
+  color: #fff;
+  border-radius: var(--space-xs);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.step-card__title {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+}
+
+.step-card__description {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  margin-bottom: var(--space-md);
+  line-height: 1.5;
+}
+
+.step-card__content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-lg);
+  align-items: flex-start;
+}
+
+/* --- RSA formula display --- */
+.step-card__formula {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-md);
+  background-color: var(--color-bg);
+  padding: var(--space-md);
+  border-radius: var(--space-xs);
+  border-left: 3px solid var(--color-primary);
+  word-break: break-all;
+}
+
+.step-card__values {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--space-xs) var(--space-md);
+  font-size: var(--font-size-sm);
+}
+
+.step-card__value-key {
+  color: var(--color-text-muted);
+  font-weight: 600;
+}
+
+.step-card__value-val {
+  font-family: var(--font-mono);
+  color: var(--color-highlight);
+}
+
+/* --- Operation detail --- */
+.step-card__detail {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  margin-top: var(--space-md);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--color-border);
+}
+
+.step-card__detail-title {
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: var(--space-sm);
+}
