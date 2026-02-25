@@ -86,6 +86,64 @@
   border-color: var(--color-danger);
 }
 
+/* --- Input Helpers (presets, text input, random) --- */
+.input-helpers {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-sm);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: var(--space-xs);
+}
+
+.input-helpers__label {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.input-helpers__buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+}
+
+.input-helpers__btn {
+  padding: var(--space-xs) var(--space-sm);
+  border: 1px solid var(--color-primary);
+  border-radius: var(--space-xs);
+  background-color: transparent;
+  color: var(--color-primary);
+  font-size: var(--font-size-sm);
+  font-family: inherit;
+  cursor: pointer;
+  transition: background-color var(--transition-fast),
+              color var(--transition-fast);
+  white-space: nowrap;
+}
+
+.input-helpers__btn:hover {
+  background-color: var(--color-primary);
+  color: #fff;
+}
+
+.input-helpers__btn--inline {
+  flex-shrink: 0;
+}
+
+.input-panel__field-row {
+  display: flex;
+  gap: var(--space-sm);
+  align-items: stretch;
+}
+
+.input-panel__field-row .input-panel__field {
+  flex: 1;
+  min-width: 0;
+}
+
 .input-panel__submit {
   display: block;
   width: 100%;

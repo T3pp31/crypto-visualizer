@@ -53,6 +53,68 @@
   color: var(--color-primary);
 }
 
+/* --- HEX Converter Tool --- */
+.hex-tool {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: var(--space-md) var(--space-lg);
+}
+
+.hex-tool__title {
+  font-size: var(--font-size-lg);
+  color: var(--color-primary);
+  margin-bottom: var(--space-md);
+}
+
+.hex-tool__body {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-md);
+  background-color: var(--color-surface);
+  padding: var(--space-md);
+  border-radius: var(--space-sm);
+}
+
+.hex-tool__label {
+  flex: 1 1 200px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.hex-tool__field {
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid var(--color-border);
+  border-radius: var(--space-xs);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: var(--font-size-md);
+  resize: vertical;
+  transition: border-color var(--transition-fast);
+}
+
+.hex-tool__field:focus {
+  outline: none;
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+}
+
+.hex-tool__field--mono {
+  font-family: var(--font-mono);
+}
+
+.hex-tool__arrow {
+  font-size: var(--font-size-xl);
+  color: var(--color-primary);
+  font-weight: 700;
+  flex-shrink: 0;
+  text-align: center;
+}
+
 .site-footer {
   text-align: center;
   padding: var(--space-lg) var(--space-md);

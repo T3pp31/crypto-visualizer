@@ -5,6 +5,7 @@
 
 import { buildAESSteps, keyExpansion } from './algorithms/aes.js';
 import { buildRSASteps } from './algorithms/rsa.js';
+import { buildCaesarSteps } from './algorithms/caesar.js';
 import { hexToBytes } from './algorithms/utils.js';
 import { Stepper } from './visualizer/stepper.js';
 import { Renderer } from './visualizer/renderer.js';
@@ -24,9 +25,14 @@ const progressBar = document.getElementById('progress-bar');
 const vizArea = document.getElementById('viz-area');
 const roundKeyPanel = document.getElementById('round-key-panel');
 const inputError = document.getElementById('input-error');
+const aesTextInput = document.getElementById('aes-text-input');
+const aesPlaintext = document.getElementById('aes-plaintext');
+const aesKey = document.getElementById('aes-key');
+const btnRandomKey = document.getElementById('btn-random-key');
+const presetButtons = document.querySelectorAll('[data-preset]');
 
 // --- State ---
-let currentAlgo = 'aes';
+let currentAlgo = 'caesar';
 let stepper = null;
 let animator = null;
 let currentRoundKeys = null;
@@ -52,7 +58,9 @@ algoButtons.forEach((btn) => {
 btnEncrypt.addEventListener('click', () => {
   try {
     inputError.textContent = '';
-    if (currentAlgo === 'aes') {
+    if (currentAlgo === 'caesar') {
+      startCaesar();
+    } else if (currentAlgo === 'aes') {
       startAES();
     } else {
       startRSA();
@@ -61,6 +69,18 @@ btnEncrypt.addEventListener('click', () => {
     inputError.textContent = err.message;
   }
 });
+
+function startCaesar() {
+  const text = document.getElementById('caesar-text').value;
+  const shift = parseInt(document.getElementById('caesar-shift').value, 10);
+  if (isNaN(shift) || shift < 1 || shift > 25) {
+    throw new RangeError('シフト量は1〜25の範囲で指定してください。');
+  }
+  const steps = buildCaesarSteps(text, shift);
+  currentRoundKeys = null;
+  renderer.hideRoundKeys();
+  initVisualization(steps);
+}
 
 function startAES() {
   const pt = document.getElementById('aes-plaintext').value.trim();
@@ -135,7 +155,7 @@ function resetVisualization() {
   animator = null;
   currentRoundKeys = null;
   vizArea.innerHTML =
-    '<p class="viz-area__placeholder">上の入力欄に値を入力し、「暗号化を開始」ボタンを押してください。</p>';
+    '<p class="viz-area__placeholder">上の「かんたん入力」からサンプルを選ぶか、テキストを入力して「暗号化を開始」ボタンを押してください。</p>';
   stepLabel.textContent = 'ステップ: -- / --';
   progressBar.value = 0;
   setControlsEnabled(false);
@@ -178,4 +198,111 @@ document.addEventListener('keydown', (e) => {
       stepper.goTo(stepper.totalSteps - 1);
       break;
   }
+});
+
+// --- Input Helpers ---
+
+const AES_BLOCK_BYTES = 16;
+
+/**
+ * Convert an ASCII string to a 32-char hex string (zero-padded to 16 bytes).
+ */
+function textToHex(text) {
+  let hex = '';
+  for (let i = 0; i < text.length && i < AES_BLOCK_BYTES; i++) {
+    hex += text.charCodeAt(i).toString(16).padStart(2, '0');
+  }
+  return hex.padEnd(AES_BLOCK_BYTES * 2, '0');
+}
+
+/**
+ * Generate a random 32-char hex string (16 bytes).
+ */
+function randomHex() {
+  const bytes = new Uint8Array(AES_BLOCK_BYTES);
+  crypto.getRandomValues(bytes);
+  return Array.from(bytes, (b) => b.toString(16).padStart(2, '0')).join('');
+}
+
+// Presets: plaintext + key pairs
+const PRESETS = {
+  hello: {
+    text: 'Hello, World!!!',
+    key: '0123456789abcdef0123456789abcdef',
+  },
+  nist: {
+    plaintext: '3243f6a8885a308d313198a2e0370734',
+    key: '2b7e151628aed2a6abf7158809cf4f3c',
+  },
+};
+
+// Text input → auto-convert to HEX
+aesTextInput.addEventListener('input', () => {
+  const text = aesTextInput.value;
+  if (text.length > 0) {
+    aesPlaintext.value = textToHex(text);
+  } else {
+    aesPlaintext.value = '';
+  }
+});
+
+// If user manually edits the HEX field, clear text input
+aesPlaintext.addEventListener('input', () => {
+  aesTextInput.value = '';
+});
+
+// Random key button
+btnRandomKey.addEventListener('click', () => {
+  aesKey.value = randomHex();
+});
+
+// Preset buttons
+presetButtons.forEach((btn) => {
+  btn.addEventListener('click', () => {
+    const preset = btn.dataset.preset;
+    if (preset === 'random') {
+      aesPlaintext.value = randomHex();
+      aesKey.value = randomHex();
+      aesTextInput.value = '';
+    } else if (PRESETS[preset]) {
+      const p = PRESETS[preset];
+      if (p.text) {
+        aesTextInput.value = p.text;
+        aesPlaintext.value = textToHex(p.text);
+      } else {
+        aesTextInput.value = '';
+        aesPlaintext.value = p.plaintext;
+      }
+      aesKey.value = p.key;
+    }
+  });
+});
+
+// --- HEX Converter Tool ---
+const hexToolText = document.getElementById('hex-tool-text');
+const hexToolHex = document.getElementById('hex-tool-hex');
+let hexToolUpdating = false;
+
+hexToolText.addEventListener('input', () => {
+  if (hexToolUpdating) return;
+  hexToolUpdating = true;
+  const text = hexToolText.value;
+  hexToolHex.value = [...text]
+    .map((ch) => ch.charCodeAt(0).toString(16).padStart(2, '0'))
+    .join(' ');
+  hexToolUpdating = false;
+});
+
+hexToolHex.addEventListener('input', () => {
+  if (hexToolUpdating) return;
+  hexToolUpdating = true;
+  const raw = hexToolHex.value.replace(/\s+/g, '');
+  if (/^[0-9a-fA-F]*$/.test(raw) && raw.length % 2 === 0) {
+    let text = '';
+    for (let i = 0; i < raw.length; i += 2) {
+      text += String.fromCharCode(parseInt(raw.substring(i, i + 2), 16));
+    }
+    hexToolText.value = text;
+  }
+  hexToolUpdating = false;
 });
