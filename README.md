@@ -70,3 +70,7 @@ crypto-visualizer/
 ### RSA
 - p=61, q=53, e=17 → n=3233, d=2753
 - M=65 → C=2790 → M=65
+
+## コントリビューション
+
+`main` への直接 push はできません。feature ブランチから PR を作成し、内容を確認してからマージしてください。詳細は [CONTRIBUTING.md](.github/CONTRIBUTING.md) を参照してください。
