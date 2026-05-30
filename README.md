@@ -73,4 +73,4 @@ crypto-visualizer/
 
 ## コントリビューション
 
-`main` への直接 push はできません。feature ブランチから PR を作成し、オーナー承認後にマージしてください。詳細は [CONTRIBUTING.md](.github/CONTRIBUTING.md) を参照してください。
+`main` への直接 push はできません。feature ブランチから PR を作成し、内容を確認してからマージしてください。詳細は [CONTRIBUTING.md](.github/CONTRIBUTING.md) を参照してください。
