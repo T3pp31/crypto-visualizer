@@ -1,0 +1,48 @@
+/* blockchain.css — Blockchain tutorial page layout */
+
+.chapter-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs);
+  justify-content: center;
+}
+
+.chapter-tabs__btn {
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid var(--color-border);
+  border-radius: var(--space-sm);
+  background-color: var(--color-surface);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+}
+
+.chapter-tabs__btn:hover {
+  color: var(--color-primary-hover);
+  border-color: var(--color-primary);
+}
+
+.chapter-tabs__btn--active {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+}
+
+.chapter-tabs__btn:focus-visible {
+  outline: 2px solid var(--color-highlight);
+  outline-offset: 2px;
+}
+
+.chapter-panel {
+  text-align: center;
+}
+
+.chapter-panel__start {
+  margin-top: var(--space-md);
+}
+
+.chapter-panel__hint {
+  color: var(--color-text-muted);
+  font-size: var(--font-size-sm);
+  margin-top: var(--space-sm);
+}

@@ -1,0 +1,279 @@
+/* blockchain-viz.css — Blockchain visualization components */
+
+.bc-viz {
+  margin-top: var(--space-md);
+}
+
+.bc-fields {
+  display: grid;
+  grid-template-columns: minmax(120px, 1fr) 2fr;
+  gap: var(--space-sm) var(--space-md);
+  background-color: var(--color-surface);
+  border-radius: var(--space-sm);
+  padding: var(--space-md);
+}
+
+.bc-fields__label {
+  font-weight: 600;
+  color: var(--color-text-muted);
+}
+
+.bc-fields__label--highlight {
+  color: var(--color-highlight);
+}
+
+.bc-fields__value {
+  word-break: break-all;
+}
+
+.bc-fields__value--mono {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+}
+
+.bc-fields__input {
+  width: 100%;
+  padding: var(--space-sm);
+  border: 1px solid var(--color-border);
+  border-radius: var(--space-xs);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: inherit;
+}
+
+.bc-hash-compare {
+  margin-top: var(--space-sm);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+}
+
+.bc-chain {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
+.bc-chain__arrow {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.bc-block-card {
+  width: 100%;
+  max-width: 420px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--space-sm);
+  padding: var(--space-md);
+}
+
+.bc-block-card--invalid {
+  border-color: var(--color-danger);
+}
+
+.bc-block-card--highlight {
+  border-color: var(--color-highlight);
+  box-shadow: 0 0 0 2px var(--color-highlight-dim);
+}
+
+.bc-block-card__title {
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: var(--space-xs);
+}
+
+.bc-block-card__data {
+  margin-bottom: var(--space-sm);
+}
+
+.bc-block-card__hash {
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.bc-block-card__status {
+  margin-top: var(--space-sm);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+}
+
+.bc-block-card--invalid .bc-block-card__status {
+  color: var(--color-danger);
+}
+
+.bc-block-card:not(.bc-block-card--invalid) .bc-block-card__status {
+  color: var(--color-success);
+}
+
+.bc-network {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--space-md);
+}
+
+.bc-node {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-success);
+  border-radius: var(--space-sm);
+  padding: var(--space-md);
+}
+
+.bc-node--desync {
+  border-color: var(--color-danger);
+}
+
+.bc-node__label {
+  font-weight: 700;
+  margin-bottom: var(--space-xs);
+}
+
+.bc-node__info {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.bc-mining__controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  margin-top: var(--space-md);
+}
+
+.bc-action-btn {
+  padding: var(--space-sm) var(--space-md);
+  border: 1px solid var(--color-border);
+  border-radius: var(--space-sm);
+  background-color: var(--color-surface-2);
+  color: var(--color-text);
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+}
+
+.bc-action-btn:hover:not(:disabled) {
+  border-color: var(--color-primary);
+  color: var(--color-primary-hover);
+}
+
+.bc-action-btn--primary {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: #fff;
+}
+
+.bc-action-btn--primary:hover:not(:disabled) {
+  background-color: var(--color-primary-hover);
+}
+
+.bc-action-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.bc-pos__row {
+  position: relative;
+  background-color: var(--color-surface);
+  border-radius: var(--space-sm);
+  padding: var(--space-md);
+  margin-bottom: var(--space-sm);
+  overflow: hidden;
+}
+
+.bc-pos__row--selected {
+  outline: 2px solid var(--color-highlight);
+}
+
+.bc-pos__name {
+  font-weight: 700;
+  display: block;
+}
+
+.bc-pos__stake {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-muted);
+}
+
+.bc-pos__bar {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 4px;
+  background-color: var(--color-primary);
+  opacity: 0.5;
+}
+
+.bc-fork__branch {
+  background-color: var(--color-surface);
+  border-left: 4px solid var(--color-primary);
+  padding: var(--space-sm) var(--space-md);
+  margin-bottom: var(--space-sm);
+  font-family: var(--font-mono);
+  font-size: var(--font-size-sm);
+}
+
+.bc-fork__branch--winner {
+  border-left-color: var(--color-success);
+}
+
+.bc-fork__branch--orphan {
+  border-left-color: var(--color-danger);
+  opacity: 0.75;
+}
+
+.bc-balances {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: var(--space-sm) var(--space-lg);
+  background-color: var(--color-surface);
+  padding: var(--space-md);
+  border-radius: var(--space-sm);
+}
+
+.bc-balances dt {
+  font-weight: 600;
+}
+
+.bc-balances dd {
+  font-family: var(--font-mono);
+  text-align: right;
+}
+
+.bc-contract__form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-md);
+  align-items: flex-end;
+  margin-top: var(--space-md);
+}
+
+.bc-contract__field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  font-size: var(--font-size-sm);
+}
+
+.bc-error {
+  color: var(--color-danger);
+  margin-top: var(--space-sm);
+  font-size: var(--font-size-sm);
+}
+
+.bc-links {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  margin-top: var(--space-md);
+}
+
+.bc-links__anchor {
+  color: var(--color-primary-hover);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bc-action-btn {
+    transition: none;
+  }
+}

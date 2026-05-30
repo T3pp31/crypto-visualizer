@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ブロックチェーン解説 | 暗号アルゴリズム ビジュアライザー</title>
+  <link rel="stylesheet" href="../assets/css/base.css">
+  <link rel="stylesheet" href="../assets/css/layout.css">
+  <link rel="stylesheet" href="../assets/css/components/site-nav.css">
+  <link rel="stylesheet" href="../assets/css/components/step-card.css">
+  <link rel="stylesheet" href="../assets/css/components/controls.css">
+  <link rel="stylesheet" href="../assets/css/components/blockchain-viz.css">
+  <link rel="stylesheet" href="../assets/css/pages/blockchain.css">
+</head>
+<body>
+  <header class="site-header">
+    <h1 class="site-header__title">ブロックチェーン解説</h1>
+    <p class="site-header__subtitle">ブロック・チェーン・合意形成・スマートコントラクトをステップで学ぶ</p>
+    <nav class="site-nav" aria-label="サイトナビゲーション">
+      <a class="site-nav__link" href="../index.html">暗号ビジュアライザー</a>
+      <a class="site-nav__link site-nav__link--active" href="blockchain.html" aria-current="page">ブロックチェーン解説</a>
+    </nav>
+  </header>
+
+  <main class="main-content">
+    <nav class="chapter-tabs" aria-label="章の選択">
+      <button type="button" class="chapter-tabs__btn chapter-tabs__btn--active"
+              data-chapter="intro" aria-pressed="true">概要</button>
+      <button type="button" class="chapter-tabs__btn"
+              data-chapter="block" aria-pressed="false">ブロック</button>
+      <button type="button" class="chapter-tabs__btn"
+              data-chapter="chain" aria-pressed="false">チェーン</button>
+      <button type="button" class="chapter-tabs__btn"
+              data-chapter="ledger" aria-pressed="false">分散台帳</button>
+      <button type="button" class="chapter-tabs__btn"
+              data-chapter="pow" aria-pressed="false">PoW</button>
+      <button type="button" class="chapter-tabs__btn"
+              data-chapter="pos" aria-pressed="false">PoS</button>
+      <button type="button" class="chapter-tabs__btn"
+              data-chapter="fork" aria-pressed="false">フォーク</button>
+      <button type="button" class="chapter-tabs__btn"
+              data-chapter="contract" aria-pressed="false">コントラクト</button>
+      <button type="button" class="chapter-tabs__btn"
+              data-chapter="crypto-link" aria-pressed="false">暗号</button>
+    </nav>
+
+    <section class="chapter-panel" aria-label="章の開始">
+      <button type="button" class="input-panel__submit chapter-panel__start" id="btn-start-chapter"
+              aria-label="選択した章の学習を開始">
+        学習を開始
+      </button>
+      <p class="chapter-panel__hint">章を選んでから開始してください。← → Space でステップ操作できます。</p>
+      <output class="input-panel__error" id="input-error" aria-live="assertive"></output>
+    </section>
+
+    <section class="controls" aria-label="再生コントロール">
+      <button type="button" class="controls__btn" id="btn-first" aria-label="最初のステップへ" disabled>
+        &#x23EE;
+      </button>
+      <button type="button" class="controls__btn" id="btn-prev" aria-label="前のステップへ" disabled>
+        &#x23F4;
+      </button>
+      <button type="button" class="controls__btn controls__btn--primary" id="btn-play" aria-label="自動再生" disabled>
+        &#x25B6;
+      </button>
+      <button type="button" class="controls__btn" id="btn-next" aria-label="次のステップへ" disabled>
+        &#x23F5;
+      </button>
+      <button type="button" class="controls__btn" id="btn-last" aria-label="最後のステップへ" disabled>
+        &#x23ED;
+      </button>
+
+      <div class="controls__progress">
+        <span class="controls__step-label" id="step-label" aria-live="polite">
+          ステップ: -- / --
+        </span>
+        <progress class="controls__progress-bar" id="progress-bar" value="0" max="100"></progress>
+      </div>
+
+      <label class="controls__speed-label" for="speed-slider">
+        速度
+        <input class="controls__speed-slider" type="range" id="speed-slider"
+               min="100" max="2000" value="800" step="100"
+               aria-label="アニメーション速度">
+      </label>
+    </section>
+
+    <section class="viz-area" id="viz-area" aria-label="可視化エリア" aria-live="polite">
+      <p class="viz-area__placeholder">
+        章を選び「学習を開始」を押すとステップが表示されます。
+      </p>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>教育目的のブロックチェーン・暗号学習ツール</p>
+  </footer>
+
+  <script type="module" src="../assets/js/pages/blockchain-main.js" defer></script>
+</body>
+</html>
