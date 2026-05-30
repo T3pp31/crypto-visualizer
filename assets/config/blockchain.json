@@ -1,0 +1,44 @@
+{
+  "powLeadingZeros": 2,
+  "miningBatchSize": 500,
+  "sampleBlocks": [
+    {
+      "index": 0,
+      "data": "Genesis Block",
+      "timestamp": 1700000000000
+    },
+    {
+      "index": 1,
+      "data": "Alice → Bob: 10 BTC",
+      "timestamp": 1700000060000
+    },
+    {
+      "index": 2,
+      "data": "Bob → Carol: 3 BTC",
+      "timestamp": 1700000120000
+    }
+  ],
+  "contractDemo": {
+    "accounts": {
+      "Alice": 100,
+      "Bob": 50,
+      "Carol": 0
+    },
+    "defaultTransfer": {
+      "from": "Alice",
+      "to": "Bob",
+      "amount": 10
+    }
+  },
+  "chapters": [
+    { "id": "intro", "title": "概要" },
+    { "id": "block", "title": "ブロック" },
+    { "id": "chain", "title": "チェーン" },
+    { "id": "ledger", "title": "分散台帳" },
+    { "id": "pow", "title": "PoW" },
+    { "id": "pos", "title": "PoS" },
+    { "id": "fork", "title": "フォーク" },
+    { "id": "contract", "title": "コントラクト" },
+    { "id": "crypto-link", "title": "暗号" }
+  ]
+}

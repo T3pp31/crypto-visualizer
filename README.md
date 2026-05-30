@@ -1,11 +1,12 @@
 # 暗号アルゴリズム ビジュアライザー
 
-AES-128 と RSA の暗号化プロセスをステップごとに可視化する教育ツールです。
+AES-128 と RSA の暗号化プロセスをステップごとに可視化する教育ツールです。ブロックチェーンの仕組みを学べる解説ページも含みます。
 
 ## 機能
 
 - **AES-128**: SubBytes, ShiftRows, MixColumns, AddRoundKey の各操作を全10ラウンド・41ステップで可視化
 - **RSA**: 鍵生成、暗号化、復号の全プロセスを12ステップで可視化
+- **ブロックチェーン解説**: ブロック・チェーン・分散台帳・PoW/PoS・フォーク・スマートコントラクトを章ごとにインタラクティブに学習（[`pages/blockchain.html`](pages/blockchain.html)）
 - ステップごとの前進/後退ナビゲーション
 - 自動再生（速度調整可能）
 - キーボードショートカット対応（← → Space Home End）
@@ -26,12 +27,18 @@ npx serve .
 
 ブラウザで `http://localhost:8000` を開いてください。
 
+ブロックチェーン解説は `http://localhost:8000/pages/blockchain.html`、またはトップページのナビから移動できます。
+
 ## プロジェクト構成
 
 ```
 crypto-visualizer/
-├── index.html                   # エントリーポイント
+├── index.html                   # 暗号ビジュアライザー（エントリーポイント）
+├── pages/
+│   └── blockchain.html          # ブロックチェーン解説ページ
 ├── assets/
+│   ├── config/
+│   │   └── blockchain.json      # ブロックチェーンデモ設定
 │   ├── css/
 │   │   ├── base.css             # CSS変数・リセット
 │   │   ├── layout.css           # ページレイアウト
@@ -44,10 +51,14 @@ crypto-visualizer/
 │   │   │   ├── aes-operations.js# SubBytes等
 │   │   │   ├── aes-key-expansion.js
 │   │   │   ├── rsa.js           # RSAステップ生成
-│   │   │   └── utils.js         # 共通ユーティリティ
+│   │   │   ├── utils.js         # 共通ユーティリティ
+│   │   │   └── blockchain/    # ブロックチェーン純粋ロジック
+│   │   ├── pages/
+│   │   │   └── blockchain-main.js  # ブロックチェーン解説の配線
 │   │   └── visualizer/          # DOM操作担当
 │   │       ├── stepper.js       # ステップナビゲーション
-│   │       ├── renderer.js      # DOM生成
+│   │       ├── renderer.js      # 暗号可視化 DOM
+│   │       ├── blockchain-renderer.js  # ブロックチェーン DOM
 │   │       └── animator.js      # 自動再生制御
 │   └── vendor/                  # 外部ライブラリ（現在なし）
 └── README.md
@@ -55,10 +66,19 @@ crypto-visualizer/
 
 ## 操作方法
 
+### 暗号ビジュアライザー（index.html）
+
 1. アルゴリズムタブで AES-128 または RSA を選択
 2. 入力値を設定（AES: 平文と鍵の16進数、RSA: 素数とメッセージ）
 3. 「暗号化を開始」ボタンをクリック
 4. コントロールボタンまたはキーボードでステップを操作
+
+### ブロックチェーン解説（pages/blockchain.html）
+
+1. 章タブで学びたいトピックを選択
+2. 「学習を開始」をクリック
+3. コントロールまたはキーボード（← → Space Home End）でステップを進める
+4. チェーン・マイニング・送金デモなど、章に応じたボタンでインタラクションを試す
 
 ## テストベクター
 
