@@ -1,0 +1,23 @@
+# BEFORE — パフォーマンス計測結果
+# date: 2026-08-22T12:35:09.879Z
+# node: v26.0.0
+
+=== Characterization (挙動固定) ===
+[OK  ] sha256Hex('abc')
+       expected: ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad
+       actual:   ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad
+[OK  ] sha256Hex('')
+       expected: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+       actual:   e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+[OK  ] buildAESSteps cipherHex
+       expected: 3925841d02dc09fbdc118597196a0b32
+       actual:   3925841d02dc09fbdc118597196a0b32
+[OK  ] mineBlock(block, 2, 0, 1000000)
+       expected: (deterministic)
+       actual:   nonce=230, attempts=231, hash=00967893b72efaae816d2ee3edd9497d1fb5164e6d53f878488e8c8a900355cf
+
+=== Performance (median ms) ===
+sha256Hex (20000 iters, ~100 char input): 1329.110 ms  (avg 0.0665 ms/call, N=20000)
+hashBlock (5000 iters): 556.900 ms  (avg 0.1114 ms/call, N=5000)
+mineBlock (leadingZeros=2, single mine): 20.051 ms
+buildAESSteps (200 iters): 35.785 ms  (avg 0.1789 ms/call, N=200)

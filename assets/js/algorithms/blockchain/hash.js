@@ -2,15 +2,23 @@
  * hash.js — SHA-256 helpers for blockchain demos (pure, no DOM)
  */
 
+const textEncoder = new TextEncoder();
+const HEX = Array.from({ length: 256 }, (_, i) => i.toString(16).padStart(2, '0'));
+
 /**
  * Compute SHA-256 hex digest of a string.
  * @param {string} input
  * @returns {Promise<string>}
  */
 export async function sha256Hex(input) {
-  const encoded = new TextEncoder().encode(input);
+  const encoded = textEncoder.encode(input);
   const buffer = await crypto.subtle.digest('SHA-256', encoded);
-  return Array.from(new Uint8Array(buffer), (b) => b.toString(16).padStart(2, '0')).join('');
+  const bytes = new Uint8Array(buffer);
+  let hex = '';
+  for (let i = 0; i < bytes.length; i += 1) {
+    hex += HEX[bytes[i]];
+  }
+  return hex;
 }
 
 /**
@@ -34,6 +42,16 @@ export function blockHeaderString({ index, timestamp, data, prevHash, nonce = 0 
  */
 export async function hashBlock(block) {
   return sha256Hex(blockHeaderString(block));
+}
+
+/**
+ * Hash a block header with only the nonce overridden (PoW mining path).
+ * @param {Object} block
+ * @param {number} nonce
+ * @returns {Promise<string>}
+ */
+export async function hashBlockWithNonce(block, nonce) {
+  return sha256Hex(blockHeaderString({ ...block, nonce }));
 }
 
 /**

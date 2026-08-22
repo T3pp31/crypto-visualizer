@@ -2,7 +2,7 @@
  * mining.js — Simplified Proof-of-Work (pure functions)
  */
 
-import { hashBlock, meetsDifficulty } from './hash.js';
+import { hashBlockWithNonce, meetsDifficulty } from './hash.js';
 
 /**
  * Mine a block by incrementing nonce until difficulty is met.
@@ -15,10 +15,9 @@ import { hashBlock, meetsDifficulty } from './hash.js';
 export async function mineBlock(block, leadingZeros, startNonce = 0, maxAttempts = 100000) {
   let nonce = startNonce;
   for (let attempts = 0; attempts < maxAttempts; attempts++, nonce++) {
-    const candidate = { ...block, nonce };
-    const hash = await hashBlock(candidate);
+    const hash = await hashBlockWithNonce(block, nonce);
     if (meetsDifficulty(hash, leadingZeros)) {
-      return { block: { ...candidate, hash }, attempts: attempts + 1 };
+      return { block: { ...block, nonce, hash }, attempts: attempts + 1 };
     }
   }
   return null;
